@@ -17,9 +17,6 @@ with open('style.css') as f:
 
 # Criteria variables
 sl=[]
-et=[]
-jf=[]
-ind=[]
 
 # Load data
 @st.cache_data
@@ -31,6 +28,7 @@ def load_data():
     return df
 
 # Boxplot to show salary data
+@st.cache_data
 def salary(df):
     #Cleaning salary column as there are null values and stored in string format
     sal=df['salary'].dropna()
@@ -45,11 +43,14 @@ def salary(df):
     return fig
 
 # Pie chart to show Prefered job type
+@st.cache_data
 def job_types(df):
     job_type_data=df['onsite_remote'].value_counts().rename_axis('onsite_remote').reset_index(name='count')
     fig = px.pie(job_type_data, values=job_type_data['count'], names=job_type_data['onsite_remote'], title='Prefered Job types', hole=0.5)
     return fig
 
+# Histogram to show daily job posting
+@st.cache_data
 def job_posting_days(df):
     data = df['posted_date'].astype('datetime64[ns]')
     data = data.dt.day_name().value_counts()
@@ -58,6 +59,8 @@ def job_posting_days(df):
     fig.update_layout(xaxis_title='Days')
     return fig
 
+# Bar chart to show top companies with more hirings
+@st.cache_data
 def companies_with_more_hiring(df, slider):
     company_data = df['company'].value_counts()[:slider].sort_values()
     fig = px.bar(x=company_data.values, y=company_data.index, title=f'Top {slider} Companies with more hiring', orientation='h', text_auto=True)
@@ -71,15 +74,11 @@ def criteria(df):
         for i in d1:
             if "Seniority level" in i.keys():
                 sl.extend(i.values())
-            if "Employment type" in i.keys():
-                et.extend(i.values())
-            if "Job function" in i.keys():
-                jf.extend(i.values())
-            if "Industries" in i.keys():
-                ind.extend(i.values())
     except:
         pass
 
+# Histogram to show seniority level expectation
+@st.cache_data
 def seniority_level(df):
     json_format = df['criteria'].apply(lambda x: x[1:-1].split(',',3)).to_list()
     for i in json_format:
