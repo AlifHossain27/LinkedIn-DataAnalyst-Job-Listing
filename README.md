@@ -1,2 +1,2 @@
-# streamlit-template
-A starter template for Streamlit projects
+# LinkedIn Data Analyst job listing EDA
+A EDA of LinkedIn Data Analyst job listing for USA and Canada
